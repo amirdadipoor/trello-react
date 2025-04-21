@@ -142,3 +142,24 @@ html {
 .draggable.dragging-element {
     opacity: 0.4;
 }
+
+
+ul.main-list-section li:nth-child(1) {
+    right: 2%;
+    background-color: #7AB2B2;
+}
+
+ul.main-list-section li:nth-child(2) {
+    right: 28%;
+    background-color: #A4CAFE;
+}
+
+ul.main-list-section li:nth-child(3) {
+    right: 54%;
+    background-color: #E1F7F5;
+}
+
+ul.main-list-section li:nth-child(4) {
+    right: 80%;
+    background-color: #CABFFD;
+}
