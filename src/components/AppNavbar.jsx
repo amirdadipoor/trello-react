@@ -8,10 +8,10 @@ export default function AppNavbar() {
                 <img src={ image } className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
                 <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Trello React</span>
             </NavbarBrand>
-            <div className="flex md:order-2">
+            {/*<div className="flex md:order-2">
                 <Button>Get started</Button>
                 <NavbarToggle />
-            </div>
+            </div>*/}
             <NavbarCollapse>
                 <NavbarLink href="#" active>
                     Home
