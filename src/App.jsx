@@ -10,11 +10,14 @@ function App() {
 
 
       return (
-          <>
-              <AppNavbar></AppNavbar>
-              <ApplicationBody></ApplicationBody>
-              <AddListButton></AddListButton>
-          </>
+          <div className="min-h-screen bg-gray-100 dark:bg-gray-700">
+
+                  <AppNavbar></AppNavbar>
+                  <ApplicationBody></ApplicationBody>
+                  <AddListButton></AddListButton>
+
+          </div>
+
       )
 }
 
