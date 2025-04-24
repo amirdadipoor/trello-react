@@ -1,8 +1,40 @@
 import {Button} from "flowbite-react";
 
 export default function AppCard() {
+
+    const HandleDragEvent = () => {
+        console.log("handle drag event" );
+    }
+
+    const HandleDragStartEvent = () => {
+        console.log("handle Drag Start");
+    }
+
+    const HandleDragEnterEvent = () => {
+        console.log("handle drag Enter event" );
+    }
+
+    const HandleDragOverEvent = (event) => {
+        console.log("handle drag Over event" );
+        event.preventDefault()
+    }
+
+    const HandleDragLeaveEvent = () => {
+        console.log("handle drag leave event" );
+    }
+
+    const HandleDropEvent = () => {
+        console.log("handle drop event");
+    }
+
+    const HandleDragEndEvent = () => {
+        console.log("handle drop end");
+    }
+
+
+
     return (
-        <li className="draggable my-2" draggable="true">
+        <li className="draggable my-2" draggable="true" onDragStart={HandleDragStartEvent} onDragEnter={HandleDragEnterEvent} onDragOver={HandleDragOverEvent} onDragLeave={HandleDragLeaveEvent} onDrag={HandleDragEvent} onDrop={HandleDropEvent} onDragEnd={HandleDragEndEvent} >
             <div
                 className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 mb-2">
                 <div className="flex justify-between items-center ">

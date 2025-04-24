@@ -7,7 +7,7 @@ export default function AppNavbar() {
                 <div className="flex flex-row">
                     <ThemeToggle ></ThemeToggle>
                     <a href="https://github.com/amirdadipoor/trello-react" className="flex items-center space-x-3 rtl:space-x-reverse mr-2">
-                        <span className="self-center mt-2 text-lg font-semibold whitespace-nowrap text-gray-500 dark:text-white">Trello react (AMD ver)</span>
+                        <span className="self-center mt-2 text-lg font-semibold whitespace-nowrap text-gray-500 dark:text-white">Trello HighCopy</span>
                     </a>
                 </div>
 
