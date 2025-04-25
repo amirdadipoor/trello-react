@@ -5,6 +5,7 @@ import AppNavbar from "./components/AppNavbar.jsx";
 import ApplicationBody from "./components/ApplicationBody.jsx";
 import AddListButton from "./components/AddListButton.jsx";
 import './App.css'
+import CreateModal from "./components/modals/CreateModal.jsx";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
                   <AppNavbar></AppNavbar>
                   <ApplicationBody></ApplicationBody>
                   <AddListButton></AddListButton>
+                  <CreateModal/>
 
           </div>
 
