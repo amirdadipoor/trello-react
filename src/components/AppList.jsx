@@ -1,14 +1,15 @@
 import {Button, ListItem} from "flowbite-react";
 import AppCard  from "./AppCard.jsx";
 
-export default function AppList () {
+export default function AppList ({list , key}) {
     return (
-        <li className="list-style">
-            <h6 className="mb-2">عنوان لیست اول</h6>
+        <li className="list-style"  key={key}>
+            <h6 className="mb-2">{list.name}</h6>
             <ul className="drag-zone dropzone my-8 min-h-32">
+                {list.cards.map((item, index) => (<AppCard card={item} key={index}  />))}
+                {/*<AppCard></AppCard>
                 <AppCard></AppCard>
-                <AppCard></AppCard>
-                <AppCard></AppCard>
+                <AppCard></AppCard>*/}
             </ul>
             <span className="mt-5">
                 <Button type="button"

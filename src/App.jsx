@@ -16,7 +16,7 @@ function App() {
                   <AppNavbar></AppNavbar>
                   <ApplicationBody></ApplicationBody>
                   <AddListButton></AddListButton>
-                  <CreateModal/>
+
 
           </div>
 

@@ -1,6 +1,6 @@
 import {Button} from "flowbite-react";
 
-export default function AppCard() {
+export default function AppCard({card , key}) {
 
     const HandleDragEvent = () => {
         console.log("handle drag event" );
@@ -34,12 +34,12 @@ export default function AppCard() {
 
 
     return (
-        <li className="draggable my-2" draggable="true" onDragStart={HandleDragStartEvent} onDragEnter={HandleDragEnterEvent} onDragOver={HandleDragOverEvent} onDragLeave={HandleDragLeaveEvent} onDrag={HandleDragEvent} onDrop={HandleDropEvent} onDragEnd={HandleDragEndEvent} >
+        <li className="draggable my-2" draggable="true" onDragStart={HandleDragStartEvent} onDragEnter={HandleDragEnterEvent} onDragOver={HandleDragOverEvent} onDragLeave={HandleDragLeaveEvent} onDrag={HandleDragEvent} onDrop={HandleDropEvent} onDragEnd={HandleDragEndEvent} key={key} >
             <div
                 className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 mb-2">
                 <div className="flex justify-between items-center ">
                     <div className="flex justify-start ">
-                        <h6 className="text-base font-bold tracking-tight text-gray-900 dark:text-white">گزارش 1</h6>
+                        <h6 className="text-base font-bold tracking-tight text-gray-900 dark:text-white">{card.name}</h6>
                     </div>
                     <div className="flex justify-end px-1 pt-1">
                         <button id="dropdownButton21" data-dropdown-toggle="dropdown21"
