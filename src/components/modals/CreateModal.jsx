@@ -1,32 +1,54 @@
 import {Button, Label, Modal, ModalBody, ModalHeader, TextInput} from "flowbite-react";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
-export default function CreateModal() {
-        const [openModal, setOpenModal] = useState(true);
-        // const emailInputRef = useRef>(null);
+export default function CreateModal({open , onClose , onSubmit , labels}) {
 
-        return (
-            <>
-                {/*<Button onClick={() => setOpenModal(true)}>Toggle modal</Button>*/}
-                <Modal show={openModal} size="md" popup onClose={false} initialFocus={null}>
-                    <ModalHeader />
-                    <ModalBody>
-                        <div className="space-y-6">
-                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="name">Your name</Label>
-                                </div>
-                                <TextInput id="name" ref={null} placeholder="" required />
+    const inputRef = useRef(null);
+    const [isValidInput , setIsValidInput] = useState(true)
+
+    const handleClickSubmitButton = () => {
+        const text = inputRef.current.value;
+        if ( !text || text.trim().length <  3) {
+            //console.log("Input value: " , text);
+            setIsValidInput(false);
+        } else {
+            onSubmit(text);
+        }
+
+
+        // onClose
+    }
+
+    return (
+        <>
+            {/*<Button onClick={() => setOpenModal(true)}>Toggle modal</Button>*/}
+            <Modal show={open} size="md" popup onClose={onClose} initialFocus={null}>
+                <ModalHeader />
+                <ModalBody>
+                    <div className="space-y-6">
+                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">{ labels?.header }</h3>
+                        <div>
+                            <div className="mb-2 block">
+                                <Label htmlFor="name">{labels?.text_label}</Label>
                             </div>
+                            <TextInput id="name"  ref={inputRef}  placeholder="نام مورد نظر خود را وارد نمایید" required />
 
-                            <div className="w-full">
-                                <Button>Log in to your account</Button>
-                            </div>
+                            {isValidInput === false ?
+                                <label className="text-red-500">
+                                    {"نام وارد شده صحیح نمی باشد"}
+                                </label> : ""
+                            }
+
 
                         </div>
-                    </ModalBody>
-                </Modal>
-            </>
-        )
+
+                        <div className="w-full">
+                            <Button onClick={handleClickSubmitButton}>{labels?.button_label}</Button>
+                        </div>
+
+                    </div>
+                </ModalBody>
+            </Modal>
+        </>
+    )
 }
