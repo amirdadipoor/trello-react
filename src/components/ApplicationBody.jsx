@@ -17,6 +17,7 @@ export default function ApplicationBody({ref}) {
 
     const [startDrag , setStartDrag ] = useState([-1 , -1]);
     const [endDrag , setEndDrag ] = useState([-1 , -1]);
+    const [startDragging , setStartDragging ] = useState(false);
 
     const [modal_labels, setModalLabels] = useState(
         {
@@ -44,26 +45,48 @@ export default function ApplicationBody({ref}) {
     }
 
     useEffect(() => {
-        console.log("start-drag-changes : " ,  startDrag)
-    }, [startDrag]);
+        ///console.log(endDrag ,  startDrag)
+    }, []);
+
+
 
     useEffect(() => {
-        console.log("end-drag-changes : " ,  endDrag)
-    }, [endDrag]);
-
-    useEffect(() => {
-        console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
+        //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
         if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0) {
+            console.log("start drag race");
             if (startDrag[0] === endDrag[0] ) {
+                console.log("start drag changes : " , startDrag ,  endDrag )
                 // drag in one list
+                let newList = [...List];
+                let newCards = [...List[endDrag[0]].cards];
                 let targetCard = List[startDrag[0]].cards[startDrag[1]]
-                List[startDrag[0]].cards.splice(startDrag[1])
-                List[endDrag[0]].cards.splice(endDrag[1] , 0 , targetCard)
+
+                newCards.splice(startDrag[1] , 1)
+                let newCardsFormation = [...newCards.slice(0, endDrag[1]), targetCard, ...newCards.slice(endDrag[1])];
+
+                newList[endDrag[0]].cards = newCardsFormation;
+                setList(newList)
+                //setStartDrag([-1,-1])
+                //setEndDrag([-1 , -1])
+
+                //List[endDrag[0]].cards.splice(endDrag[1] , 0 , targetCard)
+
+                //console.log("target card : ", targetCard)
+            } else if (startDrag[0] !== endDrag[0] ) {
+                //if
+                //console.log("handle drag over list called" , startDrag ,  endDrag );
+                //let newList = [...List];
+                //let targetCard = List[startDrag[0]].cards[startDrag[1]]
+                //let startDragCardList = [...List[startDrag[0]].cards];
+                //startDragCardList.splice(startDrag[1] , 1)
+                //newList[startDrag[0]].cards = startDragCardList
+                //newList[endDrag[0]].cards.push(targetCard)
+                //setList(newList)
+                //console.log(startDragCardList)
+                /*List[startDrag[0]].cards.splice(startDrag[1])
+                List[endDrag[0]].cards.push(targetCard)
                 setList(List);
-                console.log (List )
-
-
-                console.log("target card : ", targetCard)
+                console.log(List)*/
             }
         }
 
@@ -119,7 +142,7 @@ export default function ApplicationBody({ref}) {
     return (
         <div className="show-list ">
             <ul className="list main-list-section" >
-                {List.map((item, listIndex) => <AppList list={item} key={item.id} listIndex={listIndex}  openModal={handleOpenCreateCardModal} startDrag={setStartDrag} endDrag={setEndDrag} />)}
+                {List.map((item, listIndex) => <AppList list={item} key={item.id} listIndex={listIndex}  openModal={handleOpenCreateCardModal} startDraggingProp={startDragging} setStartDragging={setStartDragging} startDrag={setStartDrag} endDrag={setEndDrag} />)}
 
             </ul>
             <CreateModal open={openCardModal} onClose={handleCloseCreateCardModal} onSubmit={handleOnSubmitCreateCardModal} labels={modal_labels} />

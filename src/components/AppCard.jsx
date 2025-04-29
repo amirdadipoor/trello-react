@@ -2,41 +2,52 @@ import {Button} from "flowbite-react";
 import {use, useState} from "react";
 import useDraggedCard from "./hooks/UseDraggedCard.jsx";
 
-export default function AppCard({card , key , index , listIndex, startDrag, endDrag}) {
+export default function AppCard({card , key , cardindex , listIndex,startDraggingProp,setStartDragging, startDrag, endDrag}) {
 
-    const [draggedCard, setDraggedCard] = useDraggedCard();
+    //const [draggedCard, setDraggedCard] = useDraggedCard();
+
+    const [cardIndex, setCardIndex] = useState(cardindex);
 
     const HandleDragEvent = (event) => {
 
         //console.log("handle drag event" );
     }
 
-    const HandleDragStartEvent = () => {
-        //console.log(index)
-        startDrag([listIndex , index])
-        console.log("handle Drag Start");
+    const HandleDragStartEvent = (event) => {
+
+        //console.log("handle Drag Start" , [listIndex , cardindex]);
+
+        startDrag([listIndex , cardindex])
+        //event.target.classList.add("dragging-element");
+
     }
 
     const HandleDragEnterEvent = () => {
-        console.log("handle drag Enter event" , draggedCard );
+        //console.log("handle drag Enter event" , draggedCard );
     }
 
     const HandleDragOverEvent = (event) => {
-        console.log("handle drag Over event" );
+        //console.log("handle drag Over event" );
         event.preventDefault()
     }
 
     const HandleDragLeaveEvent = () => {
-        console.log("handle drag leave event" );
+       // console.log("handle drag leave event" );
     }
 
     const HandleDropEvent = () => {
-        endDrag([listIndex , index])
-        console.log("handle drop event");
+        console.log("handle drop over card " , /*[listIndex , cardindex] ,*/ startDraggingProp);
+        if (startDraggingProp === false) {
+            endDrag([listIndex , cardindex])
+            setStartDragging(true)
+        }
+
+
     }
 
-    const HandleDragEndEvent = () => {
-        console.log("handle drop end");
+    const HandleDragEndEvent = (event) => {
+        //event.target.classList.remove("dragging-element");
+        //console.log("handle drop end");
     }
 
 
@@ -77,7 +88,7 @@ export default function AppCard({card , key , index , listIndex, startDrag, endD
                         </div>
                     </div>
                 </div>
-                <div className="mt-2">
+                {/*<div className="mt-2">
                     <div className="flex justify-between items-center ">
                         <div className="flex justify-start mb-3">
                             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -100,7 +111,7 @@ export default function AppCard({card , key , index , listIndex, startDrag, endD
                         className="bg-green-100 text-green-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-green-900 dark:text-green-300 min-w-sm">Green</span>
                     <span
                         className="bg-yellow-100 text-yellow-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-yellow-900 dark:text-yellow-300">Yellow</span>
-                </div>
+                </div>*/}
             </div>
         </li>
     )

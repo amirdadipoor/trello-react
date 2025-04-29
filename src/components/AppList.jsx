@@ -1,21 +1,29 @@
 import {Button, ListItem} from "flowbite-react";
 import AppCard  from "./AppCard.jsx";
 
-export default function AppList ({list , key ,listIndex, openModal , startDrag, endDrag}) {
+export default function AppList ({list , key ,listIndex, openModal ,startDraggingProp , setStartDragging, startDrag, endDrag}) {
 
     const handleClickCreateCard = () => {
-
         openModal(list.id)
+    }
+
+    const handleDragOverList = (event) => {
+        event.preventDefault()
+    }
+
+    const handleDropCardOverList = () => {
+        //console.log("Drop Over list accured" , startDragProp)
+        //if (startDragProp) {}
+        console.log("Drop Card over list" , /*[listIndex, list.cards.length] ,*/ startDraggingProp)
+        endDrag([listIndex, list.cards.length])
     }
 
     return (
         <li className="list-style"  key={key}>
             <h6 className="mb-2">{list.name}</h6>
-            <ul className="drag-zone dropzone my-8 min-h-32">
-                {list.cards.map((item, index) => (<AppCard card={item} key={item.id}  index={index} listIndex={listIndex} startDrag={startDrag}  endDrag={endDrag} />))}
-                {/*<AppCard></AppCard>
-                <AppCard></AppCard>
-                <AppCard></AppCard>*/}
+            <ul className="drag-zone dropzone my-8 min-h-32" onDragOver={handleDragOverList}   >{/* onDrop={handleDropCardOverList} */}
+                {list.cards.map((item, cardindex) => (<AppCard card={item} key={item.id}  cardindex={cardindex} listIndex={listIndex} startDraggingProp={startDraggingProp} setStartDragging={setStartDragging} startDrag={startDrag}  endDrag={endDrag} />))}
+
             </ul>
             <span className="mt-5">
                 <Button type="button" onClick={handleClickCreateCard}
