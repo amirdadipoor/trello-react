@@ -1,5 +1,6 @@
 import {Button} from "flowbite-react";
-import {use, useState} from "react";
+import {useState} from "react";
+import {useDropControl} from "./hooks/useDropControl.jsx";
 import useDraggedCard from "./hooks/UseDraggedCard.jsx";
 
 export default function AppCard({card , key , cardindex , listIndex,startDraggingProp,setStartDragging, startDrag, endDrag}) {
@@ -36,10 +37,11 @@ export default function AppCard({card , key , cardindex , listIndex,startDraggin
     }
 
     const HandleDropEvent = () => {
-        console.log("handle drop over card " , /*[listIndex , cardindex] ,*/ startDraggingProp);
-        if (startDraggingProp === false) {
+        console.log("handle drop over card " , /*[listIndex , cardindex] ,*/ useDropControl.draggingInProgress);
+        if (useDropControl.draggingInProgress === false) {
             endDrag([listIndex , cardindex])
-            setStartDragging(true)
+            useDropControl.draggingInProgress = true;
+            useDropControl.target = false
         }
 
 
