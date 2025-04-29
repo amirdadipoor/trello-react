@@ -3,17 +3,17 @@ import CreateModal from "./modals/CreateModal.jsx";
 import {useState} from "react";
 import { v4 as uuidv4 } from 'uuid';
 
-export default function ApplicationBody() {
+export default function ApplicationBody({ref}) {
 
     const [List , setList] = useState([
         {id : uuidv4() , name: "برنامه ریزی شده" , cards : []} ,
         {id : uuidv4() , name: "در حال انجام" , cards : [{id : uuidv4() , name : "گزارش" } , {id : uuidv4() , name : "کد نویسی"} , {id : uuidv4() , name : "دیباگ"} , {id:uuidv4() , name : "دیپلوی"}]} ,
-        {id : uuidv4() , name: "انجام شده" , cards : []} ,
-        {id : uuidv4(), name : "آرشیو" , cards : []} ,
+        //{id : uuidv4() , name: "انجام شده" , cards : []} ,
+        //{id : uuidv4(), name : "آرشیو" , cards : []} ,
     ]);
 
     const [openCardModal , setOpenCardModal ] = useState(false);
-    const [listSelected, setListSelected] = useState(0);
+    const [listSelected, setListSelected] = useState(-1);
     const [modal_labels, setModalLabels] = useState(
         {
             header : "لطفا نام کارت مورد نظر خود را وارد نمایید" ,
@@ -21,6 +21,23 @@ export default function ApplicationBody() {
             button_label : "ایجاد کارت جدید",
         }
     );
+
+    const createNewList = (listname) => {
+
+        if (List .length >= 4) return; // show limit list
+        List.push({id : uuidv4() , name : listname , cards : []});
+        setList(List)
+    }
+
+    if (ref) {
+        ref.current = {
+            createNewList ,
+        }
+    }
+
+
+
+
 
 
 
@@ -38,10 +55,33 @@ export default function ApplicationBody() {
     const handleOnSubmitCreateCardModal = (newElementName) => {
         console.log(newElementName);
         setOpenCardModal(false);
+        handleAddNewCardToList(newElementName);
     }
 
-    const handleAddNewCardToList = () => {
 
+
+    const handleAddNewCardToList = (cardname) => {
+        if( listSelected < 0 ) {
+            return false;
+        }
+        let desireIndex = -1;
+
+        List.forEach((item,index) => {
+            if (item.id === listSelected){
+                desireIndex = index;
+
+            }
+        })
+        console.log(desireIndex);
+        if(desireIndex >= 0){
+            List[desireIndex].cards.push({id : uuidv4() , name: cardname});
+            console.log(" new List : " , List );
+            setList(List);
+            setListSelected(-1);
+            return true;
+        }
+
+        return false;
     }
 
     return (

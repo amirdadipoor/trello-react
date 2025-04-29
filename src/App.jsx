@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useRef, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import AppNavbar from "./components/AppNavbar.jsx";
@@ -10,6 +10,7 @@ import CreateModal from "./components/modals/CreateModal.jsx";
 function App() {
 
     const [openListModal, setOpenListModal] = useState(false);
+    const createListRef = useRef(null);
     const [modal_labels, setModalLabels] = useState(
         {
             header : "لطفا نام لیست مورد نظر خود را وارد نمایید" ,
@@ -29,6 +30,7 @@ function App() {
     const handleOnSubmitCreateListModal = (newElementName) => {
         console.log(newElementName);
         setOpenListModal(false);
+        createListRef.current?.createNewList(newElementName)
     }
 
 
@@ -36,7 +38,7 @@ function App() {
         <div className="min-h-screen bg-gray-100 dark:bg-gray-700">
 
             <AppNavbar></AppNavbar>
-            <ApplicationBody />
+            <ApplicationBody ref={createListRef}/>
             <AddListButton openModal={handleOpenCreateListModal} />
             <CreateModal open={openListModal} onClose={handleCloseCreateListModal} onSubmit={handleOnSubmitCreateListModal} labels={modal_labels}/>
 
