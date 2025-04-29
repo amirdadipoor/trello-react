@@ -15,7 +15,7 @@ export default function AppList ({list , key ,listIndex, openModal ,startDraggin
     const handleDropCardOverList = () => {
         //console.log("Drop Over list accured" , startDragProp)
         //if (startDragProp) {}
-        console.log("Drop Card over list" , /*[listIndex, list.cards.length] ,*/ useDropControl.draggingInProgress)
+       // console.log("Drop Card over list" , /*[listIndex, list.cards.length] ,*/ useDropControl.draggingInProgress)
         if(useDropControl.draggingInProgress === false) {
             useDropControl.draggingInProgress = true
             useDropControl.target = true

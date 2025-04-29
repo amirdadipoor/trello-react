@@ -3,15 +3,18 @@ import CreateModal from "./modals/CreateModal.jsx";
 import {useEffect, useState} from "react";
 import {useDropControl} from "./hooks/useDropControl.jsx";
 import { v4 as uuidv4 } from 'uuid';
+import useLocalStorage from "./hooks/useLocalStorage.js";
 
 export default function ApplicationBody({ref}) {
 
-    const [List , setList] = useState([
+    const [storage, setStorage] = useLocalStorage();
+
+    const [List , setList] = useState(storage/*[
         {id : uuidv4() , name: "برنامه ریزی شده" , cards : []} ,
         {id : uuidv4() , name: "در حال انجام" , cards : [{id : uuidv4() , name : "گزارش" } , {id : uuidv4() , name : "کد نویسی"} , {id : uuidv4() , name : "دیباگ"} , {id:uuidv4() , name : "دیپلوی"}]} ,
         //{id : uuidv4() , name: "انجام شده" , cards : []} ,
         //{id : uuidv4(), name : "آرشیو" , cards : []} ,
-    ]);
+    ]*/);
 
     const [openCardModal , setOpenCardModal ] = useState(false);
     const [listSelected, setListSelected] = useState(-1);
@@ -29,13 +32,18 @@ export default function ApplicationBody({ref}) {
     );
 
 
-
+    useEffect(() => {
+        ///console.log(endDrag ,  startDrag)
+        //setStorage(List)
+        console.log("list changes watch here ...");
+    }, [List]);
 
 
     const createNewList = (listname) => {
 
         if (List .length >= 4) return; // show limit list
         List.push({id : uuidv4() , name : listname , cards : []});
+        //let newList = [...List];
         setList(List)
     }
 
@@ -45,9 +53,7 @@ export default function ApplicationBody({ref}) {
         }
     }
 
-    useEffect(() => {
-        ///console.log(endDrag ,  startDrag)
-    }, []);
+
 
 
 
@@ -55,9 +61,9 @@ export default function ApplicationBody({ref}) {
         //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
         console.log(useDropControl)
         if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0 && useDropControl.draggingInProgress) {
-            console.log("start drag race");
+           // console.log("start drag race");
             if (startDrag[0] === endDrag[0] && useDropControl.target === false ) {
-                console.log("start drag changes : " , startDrag ,  endDrag )
+                //console.log("start drag changes : " , startDrag ,  endDrag )
                 // drag in one list
                 let newList = [...List];
                 let newCards = [...List[endDrag[0]].cards];
@@ -78,7 +84,7 @@ export default function ApplicationBody({ref}) {
                 //console.log("target card : ", targetCard)
             } else if (startDrag[0] !== endDrag[0] && useDropControl.target === true ) {
                 //if
-                console.log("handle drag over list called" , startDrag ,  endDrag );
+                //console.log("handle drag over list called" , startDrag ,  endDrag );
                 let newList = [...List];
                 let targetCard = List[startDrag[0]].cards[startDrag[1]]
                 let startDragCardList = [...List[startDrag[0]].cards];

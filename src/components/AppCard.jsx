@@ -37,7 +37,7 @@ export default function AppCard({card , key , cardindex , listIndex,startDraggin
     }
 
     const HandleDropEvent = () => {
-        console.log("handle drop over card " , /*[listIndex , cardindex] ,*/ useDropControl.draggingInProgress);
+        //console.log("handle drop over card " , /*[listIndex , cardindex] ,*/ useDropControl.draggingInProgress);
         if (useDropControl.draggingInProgress === false) {
             endDrag([listIndex , cardindex])
             useDropControl.draggingInProgress = true;
