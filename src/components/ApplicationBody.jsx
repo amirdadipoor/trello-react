@@ -1,6 +1,6 @@
 import AppList from "./AppList.jsx"
 import CreateModal from "./modals/CreateModal.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 export default function ApplicationBody({ref}) {
@@ -14,6 +14,10 @@ export default function ApplicationBody({ref}) {
 
     const [openCardModal , setOpenCardModal ] = useState(false);
     const [listSelected, setListSelected] = useState(-1);
+
+    const [startDrag , setStartDrag ] = useState([-1 , -1]);
+    const [endDrag , setEndDrag ] = useState([-1 , -1]);
+
     const [modal_labels, setModalLabels] = useState(
         {
             header : "لطفا نام کارت مورد نظر خود را وارد نمایید" ,
@@ -21,6 +25,10 @@ export default function ApplicationBody({ref}) {
             button_label : "ایجاد کارت جدید",
         }
     );
+
+
+
+
 
     const createNewList = (listname) => {
 
@@ -35,8 +43,32 @@ export default function ApplicationBody({ref}) {
         }
     }
 
+    useEffect(() => {
+        console.log("start-drag-changes : " ,  startDrag)
+    }, [startDrag]);
+
+    useEffect(() => {
+        console.log("end-drag-changes : " ,  endDrag)
+    }, [endDrag]);
+
+    useEffect(() => {
+        console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
+        if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0) {
+            if (startDrag[0] === endDrag[0] ) {
+                // drag in one list
+                let targetCard = List[startDrag[0]].cards[startDrag[1]]
+                List[startDrag[0]].cards.splice(startDrag[1])
+                List[endDrag[0]].cards.splice(endDrag[1] , 0 , targetCard)
+                setList(List);
+                console.log (List )
 
 
+                console.log("target card : ", targetCard)
+            }
+        }
+
+
+    } , [startDrag , endDrag]);
 
 
 
@@ -87,7 +119,7 @@ export default function ApplicationBody({ref}) {
     return (
         <div className="show-list ">
             <ul className="list main-list-section" >
-                {List.map((item, index) => <AppList list={item} key={index} openModal={handleOpenCreateCardModal} />)}
+                {List.map((item, listIndex) => <AppList list={item} key={item.id} listIndex={listIndex}  openModal={handleOpenCreateCardModal} startDrag={setStartDrag} endDrag={setEndDrag} />)}
 
             </ul>
             <CreateModal open={openCardModal} onClose={handleCloseCreateCardModal} onSubmit={handleOnSubmitCreateCardModal} labels={modal_labels} />

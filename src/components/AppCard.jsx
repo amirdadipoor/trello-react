@@ -1,17 +1,24 @@
 import {Button} from "flowbite-react";
+import {use, useState} from "react";
+import useDraggedCard from "./hooks/UseDraggedCard.jsx";
 
-export default function AppCard({card , key}) {
+export default function AppCard({card , key , index , listIndex, startDrag, endDrag}) {
 
-    const HandleDragEvent = () => {
-        console.log("handle drag event" );
+    const [draggedCard, setDraggedCard] = useDraggedCard();
+
+    const HandleDragEvent = (event) => {
+
+        //console.log("handle drag event" );
     }
 
     const HandleDragStartEvent = () => {
+        //console.log(index)
+        startDrag([listIndex , index])
         console.log("handle Drag Start");
     }
 
     const HandleDragEnterEvent = () => {
-        console.log("handle drag Enter event" );
+        console.log("handle drag Enter event" , draggedCard );
     }
 
     const HandleDragOverEvent = (event) => {
@@ -24,6 +31,7 @@ export default function AppCard({card , key}) {
     }
 
     const HandleDropEvent = () => {
+        endDrag([listIndex , index])
         console.log("handle drop event");
     }
 

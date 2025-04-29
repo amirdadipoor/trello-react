@@ -1,10 +1,10 @@
 import {Button, ListItem} from "flowbite-react";
 import AppCard  from "./AppCard.jsx";
 
-export default function AppList ({list , key , openModal}) {
+export default function AppList ({list , key ,listIndex, openModal , startDrag, endDrag}) {
 
     const handleClickCreateCard = () => {
-        console.log(list, key);
+
         openModal(list.id)
     }
 
@@ -12,7 +12,7 @@ export default function AppList ({list , key , openModal}) {
         <li className="list-style"  key={key}>
             <h6 className="mb-2">{list.name}</h6>
             <ul className="drag-zone dropzone my-8 min-h-32">
-                {list.cards.map((item, index) => (<AppCard card={item} key={index}  />))}
+                {list.cards.map((item, index) => (<AppCard card={item} key={item.id}  index={index} listIndex={listIndex} startDrag={startDrag}  endDrag={endDrag} />))}
                 {/*<AppCard></AppCard>
                 <AppCard></AppCard>
                 <AppCard></AppCard>*/}
