@@ -9,12 +9,12 @@ export default function ApplicationBody({ref}) {
 
     const [storage, setStorage] = useLocalStorage();
 
-    const [List , setList] = useState(storage/*[
+    const [List , setList] = useState([
         {id : uuidv4() , name: "برنامه ریزی شده" , cards : []} ,
         {id : uuidv4() , name: "در حال انجام" , cards : [{id : uuidv4() , name : "گزارش" } , {id : uuidv4() , name : "کد نویسی"} , {id : uuidv4() , name : "دیباگ"} , {id:uuidv4() , name : "دیپلوی"}]} ,
         //{id : uuidv4() , name: "انجام شده" , cards : []} ,
         //{id : uuidv4(), name : "آرشیو" , cards : []} ,
-    ]*/);
+    ]);
 
     const [openCardModal , setOpenCardModal ] = useState(false);
     const [listSelected, setListSelected] = useState(-1);
@@ -35,7 +35,7 @@ export default function ApplicationBody({ref}) {
     useEffect(() => {
         ///console.log(endDrag ,  startDrag)
         //setStorage(List)
-        console.log("list changes watch here ...");
+        console.log("list changes watch with use effect");
     }, [List]);
 
 
