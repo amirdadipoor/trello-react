@@ -1,4 +1,4 @@
-import {Button} from "flowbite-react";
+import {Button, Dropdown, DropdownItem} from "flowbite-react";
 import {useState} from "react";
 import {useDropControl} from "./hooks/useDropControl.jsx";
 import useDraggedCard from "./hooks/UseDraggedCard.jsx";
@@ -48,8 +48,24 @@ export default function AppCard({card ,  cardindex , listIndex,startDraggingProp
     }
 
     const HandleDragEndEvent = (event) => {
+        //initDropdowns()
         //event.target.classList.remove("dragging-element");
         //console.log("handle drop end");
+    }
+
+    const renderTriggerDropDown = () => {
+        return (
+            <button id="dropdownButton21" data-dropdown-toggle="dropdown21"
+                    className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+                    type="button">
+                <span className="sr-only">Open dropdown</span>
+                <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor" viewBox="0 0 16 3">
+                    <path
+                        d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+                </svg>
+            </button>
+        );
     }
 
 
@@ -63,31 +79,14 @@ export default function AppCard({card ,  cardindex , listIndex,startDraggingProp
                         <h6 className="text-base font-bold tracking-tight text-gray-900 dark:text-white">{card.name}</h6>
                     </div>
                     <div className="flex justify-end px-1 pt-1">
-                        <button id="dropdownButton21" data-dropdown-toggle="dropdown21"
-                                className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
-                                type="button">
-                            <span className="sr-only">Open dropdown</span>
-                            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                 fill="currentColor" viewBox="0 0 16 3">
-                                <path
-                                    d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-                            </svg>
-                        </button>
+                        {/**/}
 
-                        <div id="dropdown21"
-                             className="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                            <ul className="py-2" aria-labelledby="dropdownButton21">
-                                <li>
-                                    <a href="#"
-                                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">ویرایش</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">حذف</a>
-                                </li>
+                        <Dropdown label="" dismissOnClick={false} renderTrigger={renderTriggerDropDown}>
+                            <DropdownItem className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 stark:hover:bg-gray-600 stark:text-gray-200 stark:hover:text-white">ویرایش</DropdownItem>
+                            <DropdownItem>حذف</DropdownItem>
+                        </Dropdown>
 
-                            </ul>
-                        </div>
+
                     </div>
                 </div>
                 {/*<div className="mt-2">
