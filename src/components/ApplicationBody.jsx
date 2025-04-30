@@ -8,13 +8,14 @@ import useLocalStorage from "./hooks/useLocalStorage.js";
 export default function ApplicationBody({ref}) {
 
     const [storage, setStorage] = useLocalStorage();
+    //console.log(storage);
 
-    const [List , setList] = useState([
+    const [List , setList] = useState(storage/*[
         {id : uuidv4() , name: "برنامه ریزی شده" , cards : []} ,
         {id : uuidv4() , name: "در حال انجام" , cards : [{id : uuidv4() , name : "گزارش" } , {id : uuidv4() , name : "کد نویسی"} , {id : uuidv4() , name : "دیباگ"} , {id:uuidv4() , name : "دیپلوی"}]} ,
         //{id : uuidv4() , name: "انجام شده" , cards : []} ,
         //{id : uuidv4(), name : "آرشیو" , cards : []} ,
-    ]);
+    ]*/);
 
     const [openCardModal , setOpenCardModal ] = useState(false);
     const [listSelected, setListSelected] = useState(-1);
@@ -34,17 +35,18 @@ export default function ApplicationBody({ref}) {
 
     useEffect(() => {
         ///console.log(endDrag ,  startDrag)
-        //setStorage(List)
-        console.log("list changes watch with use effect");
+        setStorage(List)
+        //console.log("list changes watch with use effect");
     }, [List]);
 
 
     const createNewList = (listname) => {
 
         if (List .length >= 4) return; // show limit list
-        List.push({id : uuidv4() , name : listname , cards : []});
+        let newList = [...List];
+        newList.push({id : uuidv4() , name : listname , cards : []});
         //let newList = [...List];
-        setList(List)
+        setList(newList)
     }
 
     if (ref) {
@@ -59,7 +61,7 @@ export default function ApplicationBody({ref}) {
 
     useEffect(() => {
         //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
-        console.log(useDropControl)
+        //console.log(useDropControl)
         if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0 && useDropControl.draggingInProgress) {
            // console.log("start drag race");
             if (startDrag[0] === endDrag[0] && useDropControl.target === false ) {
@@ -120,7 +122,7 @@ export default function ApplicationBody({ref}) {
     }
 
     const handleOnSubmitCreateCardModal = (newElementName) => {
-        console.log(newElementName);
+        //console.log(newElementName);
         setOpenCardModal(false);
         handleAddNewCardToList(newElementName);
     }
@@ -139,11 +141,12 @@ export default function ApplicationBody({ref}) {
 
             }
         })
-        console.log(desireIndex);
+        //console.log(desireIndex);
         if(desireIndex >= 0){
-            List[desireIndex].cards.push({id : uuidv4() , name: cardname});
-            console.log(" new List : " , List );
-            setList(List);
+            let newList = [...List];
+            newList[desireIndex].cards.push({id : uuidv4() , name: cardname});
+            //console.log(" new List : " , List );
+            setList(newList);
             setListSelected(-1);
             return true;
         }

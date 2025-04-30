@@ -28,7 +28,7 @@ function App() {
     }
 
     const handleOnSubmitCreateListModal = (newElementName) => {
-        console.log(newElementName);
+        //console.log(newElementName);
         setOpenListModal(false);
         createListRef.current?.createNewList(newElementName)
     }

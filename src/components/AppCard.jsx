@@ -3,7 +3,7 @@ import {useState} from "react";
 import {useDropControl} from "./hooks/useDropControl.jsx";
 import useDraggedCard from "./hooks/UseDraggedCard.jsx";
 
-export default function AppCard({card , key , cardindex , listIndex,startDraggingProp,setStartDragging, startDrag, endDrag}) {
+export default function AppCard({card ,  cardindex , listIndex,startDraggingProp,setStartDragging, startDrag, endDrag}) {
 
     //const [draggedCard, setDraggedCard] = useDraggedCard();
 
@@ -55,7 +55,7 @@ export default function AppCard({card , key , cardindex , listIndex,startDraggin
 
 
     return (
-        <li className="draggable my-2" draggable="true" onDragStart={HandleDragStartEvent} onDragEnter={HandleDragEnterEvent} onDragOver={HandleDragOverEvent} onDragLeave={HandleDragLeaveEvent} onDrag={HandleDragEvent} onDrop={HandleDropEvent} onDragEnd={HandleDragEndEvent} key={key} >
+        <li className="draggable my-2" draggable="true" onDragStart={HandleDragStartEvent} onDragEnter={HandleDragEnterEvent} onDragOver={HandleDragOverEvent} onDragLeave={HandleDragLeaveEvent} onDrag={HandleDragEvent} onDrop={HandleDropEvent} onDragEnd={HandleDragEndEvent} key={card.id} >
             <div
                 className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 mb-2">
                 <div className="flex justify-between items-center ">

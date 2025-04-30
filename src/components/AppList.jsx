@@ -2,7 +2,9 @@ import {Button, ListItem} from "flowbite-react";
 import AppCard  from "./AppCard.jsx";
 import {useDropControl} from "./hooks/useDropControl.jsx";
 
-export default function AppList ({list , key ,listIndex, openModal ,startDraggingProp , setStartDragging, startDrag, endDrag}) {
+export default function AppList ({list , listIndex, openModal ,startDraggingProp , setStartDragging, startDrag, endDrag}) {
+
+    //console.log(list );
 
     const handleClickCreateCard = () => {
         openModal(list.id)
@@ -25,7 +27,7 @@ export default function AppList ({list , key ,listIndex, openModal ,startDraggin
     }
 
     return (
-        <li className="list-style"  key={key}>
+        <li className="list-style"  key={list.id}>
             <h6 className="mb-2">{list.name}</h6>
             <ul className="drag-zone dropzone my-8 min-h-32" onDragOver={handleDragOverList}   onDrop={handleDropCardOverList} >{/*  */}
                 {list.cards.map((item, cardindex) => (<AppCard card={item} key={item.id}  cardindex={cardindex} listIndex={listIndex} startDraggingProp={startDraggingProp} setStartDragging={setStartDragging} startDrag={startDrag}  endDrag={endDrag} />))}
