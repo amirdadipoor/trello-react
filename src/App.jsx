@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import AppNavbar from "./components/AppNavbar.jsx";
@@ -33,9 +33,13 @@ function App() {
         createListRef.current?.createNewList(newElementName)
     }
 
+    useEffect(() => {
+        document.body.className = "bg-gray-200 dark:bg-gray-700";
+    }, []);
+
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-700">
+        <div className="min-h-screen bg-gray-200 dark:bg-gray-700">
 
             <AppNavbar></AppNavbar>
             <ApplicationBody ref={createListRef}/>

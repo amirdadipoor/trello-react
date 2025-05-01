@@ -2,7 +2,7 @@ import ThemeToggle from "./themes/ThemeToggle.jsx";
 
 export default function AppNavbar() {
     return (
-        <nav className="bg-gray-100 fixed top-0 left-0 w-full border-gray-200 dark:bg-gray-900 z-50" >
+        <nav className="bg-gray-300 fixed top-0 left-0 w-full border-gray-200 dark:bg-gray-900 z-50" >
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <div className="flex flex-row">
                     <ThemeToggle ></ThemeToggle>
