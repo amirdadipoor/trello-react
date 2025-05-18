@@ -32,6 +32,10 @@ export default function ApplicationBody({ref}) {
         }
     );
 
+    useEffect(async() => {
+        await loadListsFromApi()
+    } , [])
+
 
     useEffect(() => {
         ///console.log(endDrag ,  startDrag)
@@ -130,6 +134,20 @@ export default function ApplicationBody({ref}) {
 
 
     } , [startDrag , endDrag]);
+
+
+    const loadListsFromApi = async () => {
+        try {
+            let response = await fetch('http://localhost:80/api/v3/lists' , {
+                method: 'GET',
+            });
+            let myLists = await response.json();
+            console.log(myLists);
+
+        } catch (error) {
+            //return [];
+        }
+    }
 
 
 
