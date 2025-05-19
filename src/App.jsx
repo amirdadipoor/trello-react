@@ -27,10 +27,10 @@ function App() {
         setOpenListModal(true);
     }
 
-    const handleOnSubmitCreateListModal = (newElementName) => {
+    const handleOnSubmitCreateListModal = async (newElementName) => {
         //console.log(newElementName);
         setOpenListModal(false);
-        createListRef.current?.createNewList(newElementName)
+        await createListRef.current?.createNewList(newElementName)
     }
 
     useEffect(() => {

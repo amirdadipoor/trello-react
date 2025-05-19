@@ -6,13 +6,13 @@ export default function CreateModal({open , onClose , onSubmit , labels}) {
     const inputRef = useRef(null);
     const [isValidInput , setIsValidInput] = useState(true)
 
-    const handleClickSubmitButton = () => {
+    const handleClickSubmitButton = async () => {
         const text = inputRef.current.value;
         if ( !text || text.trim().length <  3) {
             //console.log("Input value: " , text);
             setIsValidInput(false);
         } else {
-            onSubmit(text);
+            await onSubmit(text);
         }
 
 

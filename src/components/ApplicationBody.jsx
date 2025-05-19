@@ -43,11 +43,13 @@ export default function ApplicationBody({ref}) {
     }, [List]);
 
 
-    const createNewList = (listname) => {
+    const createNewList = async (listname) => {
 
         if (List .length >= 4) return; // show limit list
         let newList = [...List];
-        newList.push({id : uuidv4() , name : listname , cards : []});
+        let newAddedList = await createListIntoApi({name: listname});
+        if(!newAddedList) return false; // show error
+        newList.push(newAddedList);
         //let newList = [...List];
         setList(newList)
     }
@@ -83,6 +85,8 @@ export default function ApplicationBody({ref}) {
 
                 useDropControl.draggingInProgress = false
                 useDropControl.target = false
+
+                updateListsAndAfterDrag(newList, 1);
 
                 setList(newList)
 
@@ -139,20 +143,12 @@ export default function ApplicationBody({ref}) {
 
     } , [startDrag , endDrag]);
 
-
-    const loadListsFromApi = async () => {
-        try {
-            let response = await fetch('http://localhost:8080/api/v3/lists' , {
-                method: 'GET',
-            });
-            let myLists = await response.json();
-
-            return myLists;
-
-        } catch (error) {
-            //return [];
-        }
+    const updateListsAndAfterDrag = (Lists , state) => {
+        console.log(Lists , state , startDrag , endDrag);
     }
+
+
+
 
 
 
@@ -168,15 +164,15 @@ export default function ApplicationBody({ref}) {
         setOpenCardModal(false);
     }
 
-    const handleOnSubmitCreateCardModal = (newElementName) => {
+    const handleOnSubmitCreateCardModal = async (newElementName) => {
         //console.log(newElementName);
         setOpenCardModal(false);
-        handleAddNewCardToList(newElementName);
+        await handleAddNewCardToList(newElementName);
     }
 
 
 
-    const handleAddNewCardToList = (cardname) => {
+    const handleAddNewCardToList = async(cardname) => {
         if( listSelected < 0 ) {
             return false;
         }
@@ -185,13 +181,15 @@ export default function ApplicationBody({ref}) {
         List.forEach((item,index) => {
             if (item.id === listSelected){
                 desireIndex = index;
-
             }
         })
         //console.log(desireIndex);
         if(desireIndex >= 0){
             let newList = [...List];
-            newList[desireIndex].cards.push({id : uuidv4() , name: cardname});
+            let newCards = { name: cardname , row : newList[desireIndex].cards.length + 1};
+            let newAddedCards = await createCardForListIntoApi(newList[desireIndex].id , newCards);
+            if (!newAddedCards) return false;
+            newList[desireIndex].cards.push(newAddedCards);
             //console.log(" new List : " , List );
             setList(newList);
             setListSelected(-1);
@@ -199,6 +197,55 @@ export default function ApplicationBody({ref}) {
         }
 
         return false;
+    }
+
+    const loadListsFromApi = async () => {
+        try {
+            let response = await fetch('http://localhost:8080/api/v3/lists' , {
+                method: 'GET',
+            });
+            let myLists = await response.json();
+
+            return myLists;
+
+        } catch (error) {
+            //return [];
+            return null
+        }
+    }
+
+    const createListIntoApi = async (newList) => {
+        try {
+            let response = await fetch('http://localhost:8080/api/v3/lists' , {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'} ,
+                body : JSON.stringify(newList)
+            })
+
+            let data = await response.json();
+            data.cards = [];
+
+            return data
+
+        }catch (error) {
+            return null;
+        }
+    }
+
+    const createCardForListIntoApi = async (listId , data) => {
+        try {
+            let response = await fetch('http://localhost:8080/api/v3/lists/' + listId + '/cards/' , {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'} ,
+                body : JSON.stringify(data)
+            });
+
+            let newCard = await response.json();
+            return newCard;
+
+        }catch (error) {
+            return null;
+        }
     }
 
     return (
