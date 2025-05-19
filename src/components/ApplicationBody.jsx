@@ -32,15 +32,14 @@ export default function ApplicationBody({ref}) {
         }
     );
 
-    useEffect(async() => {
-        await loadListsFromApi()
+    useEffect(async () => {
+        let myList = await loadListsFromApi()
+        setList(myList);
     } , [])
 
 
     useEffect(() => {
-        ///console.log(endDrag ,  startDrag)
         setStorage(List)
-        //console.log("list changes watch with use effect");
     }, [List]);
 
 
@@ -68,6 +67,8 @@ export default function ApplicationBody({ref}) {
         //console.log(useDropControl)
         if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0 && useDropControl.draggingInProgress) {
            // console.log("start drag race");
+
+            // state 1 => drag and drop in list
             if (startDrag[0] === endDrag[0] && useDropControl.target === false ) {
                 //console.log("start drag changes : " , startDrag ,  endDrag )
                 // drag in one list
@@ -91,6 +92,8 @@ export default function ApplicationBody({ref}) {
                 //List[endDrag[0]].cards.splice(endDrag[1] , 0 , targetCard)
 
                 //console.log("target card : ", targetCard)
+
+                // drag and drop between list and paste over card of another list
             } else if(startDrag[0] !== endDrag[0] && useDropControl.target === false){
                 //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
 
@@ -109,6 +112,7 @@ export default function ApplicationBody({ref}) {
                 //let newList = [...List];
                 setList(newList)
 
+                // drop on another list
             } else if (startDrag[0] !== endDrag[0] && useDropControl.target === true ) {
                 //if
                 //console.log("handle drag over list called" , startDrag ,  endDrag );
@@ -138,11 +142,12 @@ export default function ApplicationBody({ref}) {
 
     const loadListsFromApi = async () => {
         try {
-            let response = await fetch('http://localhost:80/api/v3/lists' , {
+            let response = await fetch('http://localhost:8080/api/v3/lists' , {
                 method: 'GET',
             });
             let myLists = await response.json();
-            console.log(myLists);
+
+            return myLists;
 
         } catch (error) {
             //return [];
