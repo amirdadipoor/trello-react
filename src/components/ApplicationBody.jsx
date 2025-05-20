@@ -32,15 +32,19 @@ export default function ApplicationBody({ref}) {
         }
     );
 
-    useEffect(async () => {
-        let myList = await loadListsFromApi()
-        setList(myList);
+    useEffect(  () => {
+        const fetchDataAsync = async () => {
+            let myList = await loadListsFromApi()
+            setList(myList);
+        }
+        fetchDataAsync()
+
     } , [])
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         setStorage(List)
-    }, [List]);
+    }, [List]);*/
 
 
     const createNewList = async (listname) => {
@@ -64,7 +68,7 @@ export default function ApplicationBody({ref}) {
 
 
 
-    useEffect(() => {
+    useEffect( () => {
         //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
         //console.log(useDropControl)
         if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0 && useDropControl.draggingInProgress) {
@@ -86,7 +90,7 @@ export default function ApplicationBody({ref}) {
                 useDropControl.draggingInProgress = false
                 useDropControl.target = false
 
-                updateListsAndAfterDrag(newList, 1);
+               // await updateListsAndAfterDrag(newList);
 
                 setList(newList)
 
@@ -143,8 +147,17 @@ export default function ApplicationBody({ref}) {
 
     } , [startDrag , endDrag]);
 
-    const updateListsAndAfterDrag = (Lists , state) => {
-        console.log(Lists , state , startDrag , endDrag);
+    const updateListsAndAfterDrag = async(Lists) => {
+        //console.log(Lists  , startDrag , endDrag);
+        if (startDrag[0] === endDrag[0] ) {
+            await Lists[startDrag[0]].cards.forEach((card , index) => {
+                //./console.log(index, card);
+                Lists[startDrag[0]].cards[index].row = index + 1;
+                updateCardForListIntoApi(Lists[startDrag[0]].id , Lists[startDrag[0]].cards[index].id , {name : Lists[startDrag[0]].cards[index].name , row : index + 1});
+            })
+            // console.log(Lists[startDrag[0]].cards);
+        }
+
     }
 
 
@@ -204,9 +217,14 @@ export default function ApplicationBody({ref}) {
             let response = await fetch('http://localhost:8080/api/v3/lists' , {
                 method: 'GET',
             });
-            let myLists = await response.json();
 
-            return myLists;
+            if(response.ok) {
+                let myLists = await response.json();
+                return myLists;
+            }else {
+                return null;
+            }
+
 
         } catch (error) {
             //return [];
@@ -245,6 +263,28 @@ export default function ApplicationBody({ref}) {
 
         }catch (error) {
             return null;
+        }
+    }
+
+    const updateCardForListIntoApi = async (listId , cardId , data) => {
+        try {
+            let response = await fetch('http://localhost:8080/api/v3/lists/' + listId + '/cards/' + cardId , {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'} ,
+                data : JSON.stringify(data)
+            })
+
+            if(response.ok) {
+                return true
+            }else  {
+                return false;
+            }
+
+
+
+
+        }catch (error) {
+            return false
         }
     }
 
