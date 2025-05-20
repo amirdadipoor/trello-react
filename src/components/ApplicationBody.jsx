@@ -71,79 +71,84 @@ export default function ApplicationBody({ref}) {
     useEffect( () => {
         //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
         //console.log(useDropControl)
-        if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0 && useDropControl.draggingInProgress) {
-           // console.log("start drag race");
+        const handleDragAndDropEvents = async () => {
+            if (startDrag[0] >= 0 && startDrag[1] >= 0 && endDrag[0] >= 0  && endDrag[1] >= 0 && useDropControl.draggingInProgress) {
+                // console.log("start drag race");
 
-            // state 1 => drag and drop in list
-            if (startDrag[0] === endDrag[0] && useDropControl.target === false ) {
-                //console.log("start drag changes : " , startDrag ,  endDrag )
-                // drag in one list
-                let newList = [...List];
-                let newCards = [...List[endDrag[0]].cards];
-                let targetCard = List[startDrag[0]].cards[startDrag[1]]
+                // state 1 => drag and drop in list
+                if (startDrag[0] === endDrag[0] && useDropControl.target === false ) {
+                    //console.log("start drag changes : " , startDrag ,  endDrag )
+                    // drag in one list
+                    let newList = [...List];
+                    let newCards = [...List[endDrag[0]].cards];
+                    let targetCard = List[startDrag[0]].cards[startDrag[1]]
 
-                newCards.splice(startDrag[1], 1)
-                let newCardsFormation = [...newCards.slice(0, endDrag[1]), targetCard, ...newCards.slice(endDrag[1])];
+                    newCards.splice(startDrag[1], 1)
+                    let newCardsFormation = [...newCards.slice(0, endDrag[1]), targetCard, ...newCards.slice(endDrag[1])];
 
-                newList[endDrag[0]].cards = newCardsFormation;
+                    newList[endDrag[0]].cards = newCardsFormation;
 
-                useDropControl.draggingInProgress = false
-                useDropControl.target = false
+                    useDropControl.draggingInProgress = false
+                    useDropControl.target = false
 
-               // await updateListsAndAfterDrag(newList);
+                    //
 
-                setList(newList)
+                    setList(newList)
 
-                //setStartDrag([-1,-1])
-                //setEndDrag([-1 , -1])
+                    await updateListsAndAfterDrag(newList);
 
-                //List[endDrag[0]].cards.splice(endDrag[1] , 0 , targetCard)
+                    //setStartDrag([-1,-1])
+                    //setEndDrag([-1 , -1])
 
-                //console.log("target card : ", targetCard)
+                    //List[endDrag[0]].cards.splice(endDrag[1] , 0 , targetCard)
 
-                // drag and drop between list and paste over card of another list
-            } else if(startDrag[0] !== endDrag[0] && useDropControl.target === false){
-                //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
+                    //console.log("target card : ", targetCard)
 
-                let newList = [...List];
-                let targetCard = List[startDrag[0]].cards[startDrag[1]]
-                let startDragCardList = [...List[startDrag[0]].cards];
-                let destinateCardList = [...List[endDrag[0]].cards];
-                startDragCardList.splice(startDrag[1] , 1)
-                newList[startDrag[0]].cards = startDragCardList
-                let newCardsFormation = [...destinateCardList.slice(0, endDrag[1]), targetCard, ...destinateCardList.slice(endDrag[1])];
-                newList[endDrag[0]].cards = newCardsFormation;
+                    // drag and drop between list and paste over card of another list
+                } else if(startDrag[0] !== endDrag[0] && useDropControl.target === false){
+                    //console.log("re render after drag" , " start : " , startDrag , " end : " , endDrag)
 
-                useDropControl.draggingInProgress = false
-                useDropControl.target = false
+                    let newList = [...List];
+                    let targetCard = List[startDrag[0]].cards[startDrag[1]]
+                    let startDragCardList = [...List[startDrag[0]].cards];
+                    let destinateCardList = [...List[endDrag[0]].cards];
+                    startDragCardList.splice(startDrag[1] , 1)
+                    newList[startDrag[0]].cards = startDragCardList
+                    let newCardsFormation = [...destinateCardList.slice(0, endDrag[1]), targetCard, ...destinateCardList.slice(endDrag[1])];
+                    newList[endDrag[0]].cards = newCardsFormation;
 
-                //let newList = [...List];
-                setList(newList)
+                    useDropControl.draggingInProgress = false
+                    useDropControl.target = false
 
-                // drop on another list
-            } else if (startDrag[0] !== endDrag[0] && useDropControl.target === true ) {
-                //if
-                //console.log("handle drag over list called" , startDrag ,  endDrag );
-                let newList = [...List];
-                let targetCard = List[startDrag[0]].cards[startDrag[1]]
-                let startDragCardList = [...List[startDrag[0]].cards];
-                startDragCardList.splice(startDrag[1] , 1)
-                newList[startDrag[0]].cards = startDragCardList
-                newList[endDrag[0]].cards.push(targetCard)
+                    //let newList = [...List];
+                    setList(newList)
 
-                useDropControl.draggingInProgress = false
-                useDropControl.target = false
+                    // drop on another list
+                } else if (startDrag[0] !== endDrag[0] && useDropControl.target === true ) {
+                    //if
+                    //console.log("handle drag over list called" , startDrag ,  endDrag );
+                    let newList = [...List];
+                    let targetCard = List[startDrag[0]].cards[startDrag[1]]
+                    let startDragCardList = [...List[startDrag[0]].cards];
+                    startDragCardList.splice(startDrag[1] , 1)
+                    newList[startDrag[0]].cards = startDragCardList
+                    newList[endDrag[0]].cards.push(targetCard)
 
-                setList(newList)
+                    useDropControl.draggingInProgress = false
+                    useDropControl.target = false
 
-                //console.log(startDragCardList)
-                /*List[startDrag[0]].cards.splice(startDrag[1])
-                List[endDrag[0]].cards.push(targetCard)
-                setList(List);
-                console.log(List)*/
+                    setList(newList)
+
+                    //console.log(startDragCardList)
+                    /*List[startDrag[0]].cards.splice(startDrag[1])
+                    List[endDrag[0]].cards.push(targetCard)
+                    setList(List);
+                    console.log(List)*/
+                }
             }
         }
 
+        handleDragAndDropEvents();
 
     } , [startDrag , endDrag]);
 
