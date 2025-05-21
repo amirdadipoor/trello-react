@@ -10,7 +10,7 @@ export default function ApplicationBody({ref}) {
     const [storage, setStorage] = useLocalStorage();
     //console.log(storage);
 
-    const [List , setList] = useState(storage/*[
+    const [List , setList] = useState([]/*[
         {id : uuidv4() , name: "برنامه ریزی شده" , cards : []} ,
         {id : uuidv4() , name: "در حال انجام" , cards : [{id : uuidv4() , name : "گزارش" } , {id : uuidv4() , name : "کد نویسی"} , {id : uuidv4() , name : "دیباگ"} , {id:uuidv4() , name : "دیپلوی"}]} ,
         //{id : uuidv4() , name: "انجام شده" , cards : []} ,
@@ -35,6 +35,7 @@ export default function ApplicationBody({ref}) {
     useEffect(  () => {
         const fetchDataAsync = async () => {
             let myList = await loadListsFromApi()
+            // console.log(myList)
             setList(myList);
         }
         fetchDataAsync()
@@ -123,6 +124,8 @@ export default function ApplicationBody({ref}) {
                     //let newList = [...List];
                     setList(newList)
 
+                    updateListsAndAfterDrag(newList);
+
                     // drop on another list
                 } else if (startDrag[0] !== endDrag[0] && useDropControl.target === true ) {
                     //if
@@ -138,6 +141,8 @@ export default function ApplicationBody({ref}) {
                     useDropControl.target = false
 
                     setList(newList)
+
+                    updateListsAndAfterDrag(newList);
 
                     //console.log(startDragCardList)
                     /*List[startDrag[0]].cards.splice(startDrag[1])
@@ -161,6 +166,19 @@ export default function ApplicationBody({ref}) {
                 updateCardForListIntoApi(Lists[startDrag[0]].id , Lists[startDrag[0]].cards[index].id , {name : Lists[startDrag[0]].cards[index].name , row : index + 1});
             })
             // console.log(Lists[startDrag[0]].cards);
+        }else if (startDrag[0] !== endDrag[0] ) {
+            await Lists[startDrag[0]].cards.forEach((card , index) => {
+                //./console.log(index, card);
+                Lists[startDrag[0]].cards[index].row = index + 1;
+                updateCardForListIntoApi(Lists[startDrag[0]].id , Lists[startDrag[0]].cards[index].id , {name : Lists[startDrag[0]].cards[index].name , row : index + 1});
+            })
+
+            await Lists[endDrag[0]].cards.forEach((card , index) => {
+                //./console.log(index, card);
+                Lists[endDrag[0]].cards[index].row = index + 1;
+
+                updateCardForListIntoApi( card.listId , Lists[endDrag[0]].cards[index].id , {name : Lists[endDrag[0]].cards[index].name , row : index + 1 , listId : Lists[endDrag[0]].id});
+            })
         }
 
     }
@@ -276,7 +294,7 @@ export default function ApplicationBody({ref}) {
             let response = await fetch('http://localhost:8080/api/v3/lists/' + listId + '/cards/' + cardId , {
                 method: 'PUT',
                 headers: {'Content-Type': 'application/json'} ,
-                data : JSON.stringify(data)
+                body : JSON.stringify(data)
             })
 
             if(response.ok) {
